@@ -1,0 +1,49 @@
+name: CICD
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  paths:
+    - 'terraform/**.tf' 
+
+workflow_dispatch:
+  inputs:
+    environment:
+      description: 'Environment to deploy'
+      required: true
+      default: 'dev'
+
+jobs:
+  deploy:
+    name: Deploy AWS Infraestructure
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    - name: Setup Tf 
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Init 
+      run: |
+       cd terraform
+       terraform init  
+
+    - name: Terraform Plan 
+      run: |
+       cd terraform
+       terraform plan -var-file=env/${{ github.event.inputs.environment }}.tfvars -out plan.out
+
+    - name: Terraform Apply 
+      run: |
+       cd terraform
+       terraform apply plan.out    
+
+    - name: Clear env AWS
+      run: |
+       unset AWS_ACCESS_KEY
+       unset AWS_SECRET_KEY
