@@ -3,18 +3,15 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
-  paths:
-    - 'terraform/**.tf' 
+    paths:
+      - 'terraform/**.tf'
 
-workflow_dispatch:
-  inputs:
-    environment:
-      description: 'Environment to deploy'
-      required: true
-      default: 'dev'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'dev'
 
 jobs:
   deploy:
