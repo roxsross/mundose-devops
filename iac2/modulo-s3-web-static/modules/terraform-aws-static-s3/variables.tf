@@ -6,3 +6,4 @@ variable "region" {
 variable "bucket_name" {
   default = "demo.bootcamp.mundose.com"
 }
+
