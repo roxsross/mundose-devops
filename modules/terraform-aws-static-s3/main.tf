@@ -73,7 +73,7 @@ resource "aws_s3_bucket_website_configuration" "example" {
 # Configure bucket policy
 resource "aws_s3_bucket_policy" "example" {
   depends_on = [aws_s3_bucket_public_access_block.example]
-  bucket = aws_s3_bucket.example.id
+  bucket     = aws_s3_bucket.example.id
 
   policy = jsonencode({
     Version = "2012-10-17"
